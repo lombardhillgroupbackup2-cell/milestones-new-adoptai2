@@ -9,7 +9,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
   body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Arial Black", "Gadget", sans-serif;
     background-color: #050505;
     color: #f5f5f5;
     overflow: hidden; 
@@ -17,13 +17,39 @@
     width: 100vw;
     display: flex;
     flex-direction: row; 
+    /* Increased to 7s for more drama */
+    animation: backgroundPhaseIn 7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
-  /* --- INTRO OVERLAY (BLACK) --- */
+ @keyframes backgroundPhaseIn {
+    0% { 
+      background-color: #0e0000; /* Subtle deep red start */
+      filter: brightness(0) blur(20px);
+      opacity: 0;
+    }
+    30% {
+      background-color: #0a0000;
+      opacity: 1;
+    }
+    100% { 
+      background-color: #050505; 
+      filter: brightness(1) blur(0px);
+    }
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.85) 100%);
+    z-index: 500;
+  }
+
+  /* INTRO OVERLAY */
   #intro-overlay {
     position: fixed;
     inset: 0;
-    /* Solid Black for the requested fade-in effect */
     background-color: #000000;
     display: flex;
     justify-content: center;
@@ -34,11 +60,7 @@
     text-align: center;
   }
 
-  #intro-overlay.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
+  #intro-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
   .counter-number {
     font-size: clamp(60px, 15vw, 150px);
@@ -56,59 +78,112 @@
     margin-top: 15px;
   }
 
-  /* --- SIDEBAR (LEFT) --- */
+  #intro-overlay .counter-number {
+    animation: textExpand 4s ease-out forwards;
+  }
+
+  @keyframes textExpand {
+    0% { 
+      letter-spacing: 20px; 
+      opacity: 0; 
+      transform: scale(0.8); 
+    }
+    100% { 
+      letter-spacing: -2px; 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+  }
+
+  /* SIDEBAR - EXPANDED */
   .sidebar {
-    width: 320px;
+    width: 500px;
     flex-shrink: 0;
-    background: rgba(10, 10, 10, 0.95);
-    border-right: 1px solid #333;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
-    padding: 30px 20px;
-    z-index: 100;
+    padding: 40px 25px;
+    z-index: 600;
     overflow-y: auto;
-    font-size: 0.85rem;
-    box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+  }
+
+  .brand-logo-box {
+    background: #12161f;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 40px;
+    display: inline-block;
+    width: fit-content;
   }
 
   .sidebar h2 {
-    color: #d4af37;
-    border-bottom: 2px solid #d4af37;
-    padding-bottom: 10px;
-    margin-bottom: 25px;
-    font-size: 1.1rem;
+    color: #12161f;
+    border-bottom: 2px solid #12161f;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
 
   .reference {
-    margin-bottom: 10px;
-    padding: 12px;
-    border-bottom: 1px solid #222;
-    color: #777;
-    line-height: 1.4;
+    margin-bottom: 15px;
+    color: #12161f;
+    font-size: 0.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.2;
     cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 4px;
+    transition: opacity 0.2s;
   }
   
+  .reference:hover { opacity: 0.7; }
   .reference strong { color: #d4af37; margin-right: 5px; }
+  .reference.active { color: #d4af37 !important; text-decoration: underline; }
 
-  /* Hover state */
-  .reference:hover {
-    background-color: rgba(212, 175, 55, 0.1);
-    color: #ccc;
+  /* HIDDEN SPOTIFY & PLAY BUTTON */
+  #music-control {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 800;
   }
 
-  /* ACTIVE CLICK STATE (Gold & Black) */
-  .reference.active {
-    background-color: #000000 !important;
-    color: #d4af37 !important;
+  #play-btn {
+    background: rgba(212, 175, 55, 0.2);
     border: 1px solid #d4af37;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+    color: #d4af37;
+    padding: 10px 20px;
+    font-family: "Arial Black", sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
   }
 
-  /* --- 3D SCENE CONTAINER --- */
+  #play-btn:hover {
+    background: #d4af37;
+    color: #000;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+  }
+
+  #spotify-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* 3D SCENE CONTAINER */
   #scene-container {
     position: relative;
     flex-grow: 1;
@@ -121,10 +196,7 @@
 
   #background-canvas {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     z-index: 0;
     pointer-events: none;
   }
@@ -137,7 +209,6 @@
     z-index: 2;
   }
 
-  /* --- TIMELINE ITEMS --- */
   .timeline-item {
     position: absolute;
     top: 50%;
@@ -153,7 +224,7 @@
 
   .year-display {
     font-size: clamp(50px, 10vw, 100px);
-    font-weight: 800;
+    font-weight: 900;
     color: #d4af37;
     margin-bottom: 15px;
     text-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
@@ -161,25 +232,22 @@
   }
 
   .milestone-text {
-    font-size: clamp(16px, 2.5vw, 26px);
-    line-height: 1.6;
+    font-size: clamp(16px, 2.5vw, 24px);
+    line-height: 1.4;
     color: rgba(255, 255, 255, 0.95);
-    background: rgba(0, 0, 0, 0.85);
-    padding: clamp(20px, 4vw, 35px);
-    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 4px;
     border: 1px solid rgba(212, 175, 55, 0.3);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-    backdrop-filter: blur(8px);
+    text-transform: uppercase;
   }
 
   .milestone-text span { color: #d4af37; font-weight: bold; }
 
-  /* --- MOBILE ADJUSTMENTS --- */
   @media (max-width: 850px) {
     body { flex-direction: column; overflow-y: auto; }
     .sidebar { width: 100%; height: auto; order: 2; border-right: none; border-top: 1px solid #333; }
     #scene-container { height: 60svh; order: 1; flex-grow: 0; position: sticky; top: 0; }
-    .timeline-item { width: 85%; }
   }
 </style>
 </head>
@@ -191,6 +259,7 @@
 </div>
 
 <aside class="sidebar">
+  <div class="brand-logo-box">ADOPT AI</div>
   <h2>References</h2>
   <div id="references-list"></div>
 </aside>
@@ -200,22 +269,27 @@
   <div id="world"></div>
 </div>
 
+<div id="music-control">
+  <button id="play-btn" onclick="toggleMusic()">Play Soundtrack</button>
+<audio id="local-audio" src="f:\new adopt ai list 2\ytmp3free.cc_interstellar-main-theme-extra-extended-soundtrack-by-hans-zimmer-youtubemp3free.org.mp3"></audio>
+</div>
+
 <script>
-  // --- 1. DATA (FULLY EXPANDED) ---
   const timelineData = [
     { year: 1950, text: "<span>Alan Turing</span> publishes 'Computing Machinery and Intelligence,' posing the question: 'Can machines think?'" },
     { year: 1956, text: "<span>John McCarthy</span> and others host the Dartmouth Conference, coining the term <span>'Artificial Intelligence.'</span>" },
     { year: 1966, text: "<span>Joseph Weizenbaum</span> creates ELIZA, the first chatterbot and a pioneer in <span>Natural Language Processing</span>." },
     { year: 1974, text: "The first <span>'Artificial Intelligence Winter'</span> begins as funding cools due to limited computational power." },
-    { year: 1980, text: "<span>Edward Feigenbaum</span> introduces Expert Systems, applying Artificial Intelligence to specific domains in the corporate world." },
+    { year: 1980, text: "<span>Edward Feigenbaum</span> introduces Expert Systems, applying Artificial Intelligence to specific domains." },
     { year: 1997, text: "IBM’s <span>Deep Blue</span> defeats Kasparov. <span>Long Short-Term Memory</span> networks are proposed." },
-    { year: 2012, text: "<span>Geoffrey Hinton</span> proves the power of Deep Learning with AlexNet, revolutionizing computer vision." },
     { year: 2017, text: "The <span>'Transformer'</span> architecture is born, changing <span>Natural Language Processing</span> forever." },
+    { year: 2019, text: "<span>Lee et al.</span> analyze Emerging Technology and Business Model Innovation via <span>AI Case Studies</span>." },
+    { year: 2021, text: "<span>Kitsios & Kamariotou</span> link AI and Business Strategy toward <span>Digital Transformation</span>." },
     { year: 2022, text: "<span>OpenAI</span> launches ChatGPT, bringing <span>Generative Artificial Intelligence</span> to the global masses." },
-    { year: 2024, text: "<span>Jasmin Bharadiya</span> & <span>Ricardo Climent</span> publish research on <span>Artificial Intelligence-native</span> business automation." }
+    { year: 2024, text: "<span>Jasmin Bharadiya</span> & <span>Ricardo Climent</span> publish research on <span>AI-native</span> business automation." },
+    { year: 2025, text: "<span>Liladhar Rane et al.</span> define ML and Deep Learning for <span>Advanced Business Strategies</span>." }
   ];
 
-  // --- REFERENCES (FULLY EXPANDED TITLES) ---
   const refs = [
     "Bharadiya, Jasmin. 2023. 'The Impact of Artificial Intelligence on Business Processes.' European Journal of Technology.",
     "Bharadiya, J. P., et al. 2023. 'Rise of Artificial Intelligence in Business and Industry.' Journal of Engineering Research and Reports.",
@@ -246,29 +320,43 @@
     "Zhou, X., et al. 2022. 'Impact of Artificial Intelligence on Business Strategy in Emerging Markets.' IJOEM."
   ];
 
-  // Populate Sidebar with Click Logic
+function toggleMusic() {
+  const audio = document.getElementById('local-audio');
+  const btn = document.getElementById('play-btn');
+  
+  audio.play().then(() => {
+    btn.innerText = "Music Playing...";
+    btn.style.opacity = "0.5";
+    btn.disabled = true;
+
+    // Listen for when the music ends to re-enable the button
+    audio.onended = () => {
+      btn.innerText = "Play Soundtrack";
+      btn.style.opacity = "1";
+      btn.disabled = false;
+    };
+  }).catch(e => {
+    btn.innerText = "File not found";
+    console.error("Audio file play failed:", e);
+  });
+}
+
   const refContainer = document.getElementById('references-list');
   refs.forEach((r, i) => {
     const div = document.createElement('div');
     div.className = 'reference';
     div.innerHTML = `<strong>[${i+1}]</strong> ${r}`;
-    
-    // CLICK EVENT: Toggle 'active' class for Gold/Black style
     div.addEventListener('click', function() {
-      const allRefs = document.querySelectorAll('.reference');
-      allRefs.forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.reference').forEach(el => el.classList.remove('active'));
       this.classList.add('active');
     });
-
     refContainer.appendChild(div);
   });
 
-  // --- 2. INTRO COUNTER ---
   const counterElement = document.getElementById('year-counter');
   const introOverlay = document.getElementById('intro-overlay');
   let currentCount = 0;
-  const targetCount = 74; 
-  
+  const targetCount = 76; 
   const counterInterval = setInterval(() => {
     currentCount += 1;
     if(currentCount > targetCount) currentCount = targetCount;
@@ -276,19 +364,16 @@
     if (currentCount >= targetCount) {
       clearInterval(counterInterval);
       setTimeout(() => {
-        // Trigger the fade out of the Black overlay
         introOverlay.classList.add('hidden');
         startTimelineAnimation();
       }, 800);
     }
   }, 30);
 
-  // --- 3. 3D TEXT ENGINE ---
   const world = document.getElementById('world');
-  const Z_SPACING = 2000;  
+  const Z_SPACING = 2200;  
   const CAMERA_SPEED = 3.8; 
   const START_Z = 2000;    
-  
   const items = timelineData.map((data, index) => {
     const el = document.createElement('div');
     el.className = 'timeline-item';
@@ -298,121 +383,65 @@
   });
 
   let cameraZ = 0;
-
-  function startTimelineAnimation() {
-    requestAnimationFrame(renderTimeline);
-  }
-
+  function startTimelineAnimation() { requestAnimationFrame(renderTimeline); }
   function renderTimeline() {
     cameraZ += CAMERA_SPEED;
     const totalDepth = items.length * Z_SPACING;
-
     items.forEach((item) => {
       let relativeZ = item.z - cameraZ;
-      while (relativeZ < -1500) {
-        item.z += totalDepth;
-        relativeZ += totalDepth;
-      }
+      while (relativeZ < -1500) { item.z += totalDepth; relativeZ += totalDepth; }
       let opacity = relativeZ > 2500 ? 0 : relativeZ > 500 ? 1 : Math.max(0, (relativeZ + 500) / 1000);
       item.element.style.transform = `translate3d(-50%, -50%, ${-relativeZ}px)`;
       item.element.style.opacity = opacity;
     });
-
     requestAnimationFrame(renderTimeline);
   }
 
-  // --- 4. COMBINED CANVAS ---
   const canvas = document.getElementById('background-canvas');
   const ctx = canvas.getContext('2d');
   let constellationStars = [];
   let warpStars = [];
   const warpCount = 250;
-
   function initCanvas() {
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+    canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
     ctx.scale(dpr, dpr);
-    const w = rect.width;
-    const h = rect.height;
-
+    const w = rect.width; const h = rect.height;
     constellationStars = [];
-    const cCount = w < 800 ? 35 : 70;
-    for(let i=0; i<cCount; i++){
-      constellationStars.push({
-        x: Math.random() * w, 
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.25, 
-        vy: (Math.random() - 0.5) * 0.25
-      });
-    }
-
+    for(let i=0; i<70; i++){ constellationStars.push({x: Math.random()*w, y: Math.random()*h, vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25}); }
     warpStars = [];
-    for(let i=0; i<warpCount; i++) {
-      warpStars.push({
-        x: (Math.random() - 0.5) * w * 2,
-        y: (Math.random() - 0.5) * h * 2,
-        z: Math.random() * w,
-        brightness: Math.random() * 0.5 + 0.5
-      });
-    }
+    for(let i=0; i<warpCount; i++) { warpStars.push({x: (Math.random()-0.5)*w*2, y: (Math.random()-0.5)*h*2, z: Math.random()*w, brightness: Math.random()*0.5+0.5}); }
   }
-
-  window.addEventListener('resize', initCanvas);
-  initCanvas();
-
+  window.addEventListener('resize', initCanvas); initCanvas();
   function drawBackground() {
     const rect = canvas.parentElement.getBoundingClientRect();
-    const w = rect.width;
-    const h = rect.height;
-
-    ctx.fillStyle = '#050505';
-    ctx.fillRect(0, 0, w, h);
-    const cx = w / 2;
-    const cy = h / 2;
-
+    const w = rect.width; const h = rect.height;
+    ctx.fillStyle = '#050505'; ctx.fillRect(0, 0, w, h);
     for(let i=0; i<warpCount; i++) {
-      let s = warpStars[i];
-      s.z -= 2.0; 
-      if (s.z <= 0) s.z = w;
-      const sx = (s.x / s.z) * cx + cx;
-      const sy = (s.y / s.z) * cy + cy;
+      let s = warpStars[i]; s.z -= 2.0; if (s.z <= 0) s.z = w;
+      const sx = (s.x / s.z) * (w/2) + (w/2); const sy = (s.y / s.z) * (h/2) + (h/2);
       const r = (1 - s.z / w) * 1.5;
-      let alpha = (1 - s.z / w) * s.brightness;
-
       if (sx > 0 && sx < w && sy > 0 && sy < h) {
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-        ctx.beginPath();
-        ctx.arc(sx, sy, r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = `rgba(255, 255, 255, ${(1 - s.z / w) * s.brightness})`;
+        ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI * 2); ctx.fill();
       }
     }
-
     ctx.fillStyle = '#d4af37';
     constellationStars.forEach(s => {
-      s.x += s.vx; s.y += s.vy;
-      if(s.x < 0 || s.x > w) s.vx *= -1;
-      if(s.y < 0 || s.y > h) s.vy *= -1;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, 1.1, 0, Math.PI * 2);
-      ctx.fill();
+      s.x += s.vx; s.y += s.vy; if(s.x < 0 || s.x > w) s.vx *= -1; if(s.y < 0 || s.y > h) s.vy *= -1;
+      ctx.beginPath(); ctx.arc(s.x, s.y, 1.1, 0, Math.PI * 2); ctx.fill();
     });
-
-    const linkDist = 140;
     ctx.lineWidth = 0.4;
     for(let i=0; i<constellationStars.length; i++){
       for(let j=i+1; j<constellationStars.length; j++){
         const dx = constellationStars[i].x - constellationStars[j].x;
         const dy = constellationStars[i].y - constellationStars[j].y;
         const dist = Math.sqrt(dx*dx + dy*dy);
-        if(dist < linkDist){
-          const alphaLine = (1 - (dist / linkDist)) * 0.35;
-          ctx.strokeStyle = `rgba(212, 175, 55, ${alphaLine})`;
-          ctx.beginPath();
-          ctx.moveTo(constellationStars[i].x, constellationStars[i].y);
-          ctx.lineTo(constellationStars[j].x, constellationStars[j].y);
-          ctx.stroke();
+        if(dist < 140){
+          ctx.strokeStyle = `rgba(212, 175, 55, ${(1 - (dist / 140)) * 0.35})`;
+          ctx.beginPath(); ctx.moveTo(constellationStars[i].x, constellationStars[i].y);
+          ctx.lineTo(constellationStars[j].x, constellationStars[j].y); ctx.stroke();
         }
       }
     }
