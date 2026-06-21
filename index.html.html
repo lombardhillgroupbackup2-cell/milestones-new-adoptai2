@@ -8,15 +8,16 @@
   /* --- CORE RESET & FONTS --- */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
-  body {
+    body {
     font-family: "Arial Black", "Gadget", sans-serif;
     background-color: #050505;
     color: #f5f5f5;
-    overflow: hidden; 
+    overflow-x: hidden;
+    overflow-y: visible;
     height: 100svh;
     width: 100vw;
     display: flex;
-    flex-direction: row; 
+    flex-direction: row;
     animation: backgroundPhaseIn 7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
@@ -215,6 +216,9 @@
   }
 
   .milestone-text {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
     font-size: clamp(16px, 2.5vw, 24px);
     line-height: 1.4;
     color: rgba(255, 255, 255, 0.95);
@@ -242,7 +246,7 @@
 </div>
 
 <aside class="sidebar">
-  <div class="brand-logo-box">ADOPT AI</div>
+  <div class="brand-logo-box">ADOPTAI.US</div>
   <h2>References</h2>
   <div id="references-list"></div>
 </aside>
@@ -300,6 +304,7 @@
     "Soni, N., et al. 2020. 'Artificial Intelligence in Business: From Research to Market Deployment.' Procedia Computer Science.",
     "Thilagavathy, N., et al. 'Artificial Intelligence Technologies Adaptation in Business Management.' Int. J. Interdisciplinary Org. Studies.",
     "Xiong, Y., et al. 'Artificial Intelligence and Business Applications.'",
+        "Dr. Maya Ackerman is a pioneering AI researcher and entrepreneur who believes that AI amplifies creativity and expands the possibilities of art, music, and human expression.",
     "Zhou, X., et al. 2022. 'Impact of Artificial Intelligence on Business Strategy in Emerging Markets.' IJOEM."
   ];
 
