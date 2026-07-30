@@ -8,17 +8,16 @@
   /* --- CORE RESET & FONTS --- */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
-  body {
+    body {
     font-family: "Arial Black", "Gadget", sans-serif;
     background-color: #050505;
     color: #f5f5f5;
     overflow-x: hidden;
-    overflow-y: auto;
-    min-height: 100vh;
-    width: 100%;
+    overflow-y: visible;
+    height: 100svh;
+    width: 100vw;
     display: flex;
     flex-direction: row;
-    align-items: stretch;
     animation: backgroundPhaseIn 7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
@@ -90,15 +89,13 @@
 
   /* SIDEBAR - BLACK THEME RESTORED */
   .sidebar {
-    width: min(420px, 100%);
-    max-width: 420px;
+    width: 500px;
     flex-shrink: 0;
-    background: #000000;
+    background: #000000; 
     display: flex;
     flex-direction: column;
     padding: 40px 25px;
     z-index: 600;
-    min-height: 100vh;
     overflow-y: auto;
     border-right: 1px solid #1a1a1a;
   }
@@ -140,88 +137,50 @@
   .reference strong { color: #d4af37; margin-right: 5px; }
   .reference.active { color: #d4af37 !important; text-decoration: none; border-bottom-color: #d4af37; }
 
-  #references-list {
-    overflow-y: auto;
-    max-height: calc(100vh - 170px);
-    padding-right: 8px;
-    margin-top: 10px;
-  }
-  #references-list::-webkit-scrollbar {
-    width: 10px;
-  }
-  #references-list::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 999px;
-  }
-  #references-list::-webkit-scrollbar-thumb {
-    background: rgba(212, 175, 55, 0.45);
-    border-radius: 999px;
-    border: 2px solid rgba(0, 0, 0, 0.15);
-  }
-  #references-list::-webkit-scrollbar-thumb:hover {
-    background: rgba(212, 175, 55, 0.75);
-  }
-  #references-list {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(212, 175, 55, 0.45) rgba(255, 255, 255, 0.05);
-  }
-
   /* MUSIC CONTROL */
   #music-control {
     position: fixed;
-    bottom: 18px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 900;
+    z-index: 800;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 14px;
-    width: clamp(280px, 92%, 520px);
-    background: rgba(10, 10, 10, 0.92);
-    border: 1px solid rgba(212, 175, 55, 0.45);
-    padding: 12px 16px;
-    border-radius: 999px;
-    backdrop-filter: blur(16px);
+    align-items: center;
   }
 
   #play-btn {
-    background: transparent;
-    border: 1px solid rgba(212, 175, 55, 0.95);
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid #d4af37;
     color: #d4af37;
-    padding: 12px 26px;
+    padding: 10px 25px;
     font-family: inherit;
-    font-size: 0.9rem;
-    letter-spacing: 1.6px;
+    font-size: 11px;
+    letter-spacing: 2px;
     text-transform: uppercase;
     cursor: pointer;
-    border-radius: 999px;
-    transition: all 0.25s ease;
-    box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.1);
-    flex: 0 0 auto;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    display: inline-block;
+    margin: 0 auto;
   }
 
   #play-btn:hover {
-    background: rgba(212, 175, 55, 0.12);
-    color: #fff;
-    box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
+    background: #d4af37;
+    color: #000;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
   }
-
 
   /* 3D SCENE CONTAINER */
   #scene-container {
     position: relative;
     flex-grow: 1;
-    min-height: 100vh;
     height: 100%;
     overflow: hidden;
     perspective: 1200px;
     z-index: 1;
     background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: calc(100vh - 0px);
   }
 
   #background-canvas {
@@ -245,8 +204,8 @@
     left: 50%;
     transform-style: preserve-3d;
     text-align: center;
-    width: min(90%, 780px);
-    max-width: 780px;
+    width: 90%;
+    max-width: 750px;
     transform: translate3d(-50%, -50%, 0);
     pointer-events: none;
     will-change: transform, opacity;
@@ -304,10 +263,7 @@
 
 <div id="music-control">
   <button id="play-btn" onclick="toggleMusic()">Play Soundtrack</button>
-  <audio id="local-audio" preload="auto">
-    <source src="soundtrack3.mp3" type="audio/mpeg">
-    Your browser does not support audio playback.
-  </audio>
+  <audio id="local-audio" src="soundtrack3.mp3"></audio>
 </div>
 
 <script>
@@ -320,6 +276,7 @@
     { year: 1997, text: "IBM’s <span>Deep Blue</span> defeats Kasparov. <span>Long Short-Term Memory</span> networks are proposed." },
     { year: 2017, text: "The <span>'Transformer'</span> architecture is born, changing <span>Natural Language Processing</span> forever." },
     { year: 2019, text: "<span>Lee et al.</span> analyze Emerging Technology and Business Model Innovation via <span>AI Case Studies</span>." },
+    { year: 2019, text: "Ackerman, Maya. 2019. 'I realised machine learning could make my musical dreams come true.' Interview in <span>Silicon Republic</span>." },
     { year: 2021, text: "<span>Kitsios & Kamariotou</span> link AI and Business Strategy toward <span>Digital Transformation</span>." },
     { year: 2022, text: "<span>OpenAI</span> launches ChatGPT, bringing <span>Generative Artificial Intelligence</span> to the global masses." },
     { year: 2024, text: "<span>Jasmin Bharadiya</span> & <span>Ricardo Climent</span> publish research on <span>AI-native</span> business automation." },
@@ -329,6 +286,7 @@
   const refs = [
     "Bharadiya, Jasmin. 2023. 'The Impact of Artificial Intelligence on Business Processes.' European Journal of Technology.",
     "Bharadiya, J. P., et al. 2023. 'Rise of Artificial Intelligence in Business and Industry.' Journal of Engineering Research and Reports.",
+    "Ackerman, Maya. 2019. 'I realised machine learning could make my musical dreams come true.' Interview in Silicon Republic.",
     "Climent, R. C., et al. 2024. 'Artificial Intelligence-Enabled Business Models for Competitive Advantage.' Journal of Innovation & Knowledge.",
     "Edilia, S., and N. D. Larasati. 2023. 'Innovative Approaches in Business Development Strategies.' ITSDI.",
     "Enholm, I. M., et al. 2022. 'Artificial Intelligence and Business Value.' Information Systems Frontiers.",
@@ -353,54 +311,26 @@
     "Soni, N., et al. 2020. 'Artificial Intelligence in Business: From Research to Market Deployment.' Procedia Computer Science.",
     "Thilagavathy, N., et al. 'Artificial Intelligence Technologies Adaptation in Business Management.' Int. J. Interdisciplinary Org. Studies.",
     "Xiong, Y., et al. 'Artificial Intelligence and Business Applications.'",
-    "Ackerman, Maya. 2019. 'I realised machine learning could make my musical dreams come true.' Interview in Silicon Republic.",
     "Zhou, X., et al. 2022. 'Impact of Artificial Intelligence on Business Strategy in Emerging Markets.' IJOEM."
   ];
 
-async function loadAudioSource() {
-  const audio = document.getElementById('local-audio');
-  if (audio.dataset.loaded === 'true') return;
-  audio.src = './soundtrack3.mp3';
-  audio.load();
-  await new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => reject(new Error('Audio load timed out')), 6000);
-    audio.oncanplaythrough = () => {
-      clearTimeout(timeout);
-      audio.oncanplaythrough = null;
-      resolve();
-    };
-    audio.onerror = () => {
-      clearTimeout(timeout);
-      reject(new Error('Audio failed to load'));
-    };
-  });
-  audio.dataset.loaded = 'true';
-}
-
-async function toggleMusic() {
+function toggleMusic() {
   const audio = document.getElementById('local-audio');
   const btn = document.getElementById('play-btn');
-  btn.disabled = true;
-  btn.innerText = 'Loading...';
-  btn.style.opacity = '0.75';
-
-  try {
-    await loadAudioSource();
-    audio.volume = 1.0;
-    audio.currentTime = 0;
-    await audio.play();
-    btn.innerText = 'Music Playing...';
+  
+  audio.play().then(() => {
+    btn.innerText = "Music Playing...";
+    btn.style.opacity = "0.5";
+    btn.disabled = true;
     audio.onended = () => {
-      btn.innerText = 'Play Soundtrack';
-      btn.style.opacity = '1';
+      btn.innerText = "Play Soundtrack";
+      btn.style.opacity = "1";
       btn.disabled = false;
     };
-  } catch (e) {
-    btn.innerText = 'Play Soundtrack';
-    btn.style.opacity = '1';
-    btn.disabled = false;
-    console.error('Audio playback failed.', e);
-  }
+  }).catch(e => {
+    btn.innerText = "Check File Path";
+    console.error("Audio file play failed. Browsers often block local file access.", e);
+  });
 }
 
   const refContainer = document.getElementById('references-list');
