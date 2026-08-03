@@ -177,17 +177,14 @@
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 800;
+    z-index: 1001;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
   .intro-music-control {
-    position: static;
-    transform: none;
-    margin-top: 24px;
-    z-index: 1001;
+    display: none;
   }
 
   #play-btn {
@@ -290,11 +287,12 @@
   <div class="intro-content">
     <div class="counter-number" id="year-counter">0</div>
     <div class="counter-label">Years of<br>Artificial Intelligence</div>
-    <div id="music-control" class="intro-music-control">
-      <button id="play-btn" onclick="toggleMusic()">Play Soundtrack</button>
-      <audio id="local-audio" src="soundtrack3.mp3"></audio>
-    </div>
   </div>
+</div>
+
+<div id="music-control">
+  <button id="play-btn" onclick="toggleMusic()">Play Soundtrack</button>
+  <audio id="local-audio" src="soundtrack3.mp3"></audio>
 </div>
 
 <aside class="sidebar">
